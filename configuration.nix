@@ -1,0 +1,264 @@
+# Edit this configuration file to define what should be installed on
+# your system.  Help is available in the configuration.nix(5) man page
+# and in the NixOS manual (accessible by running ‘nixos-help’).
+
+{ config, pkgs, ... }:
+
+{
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
+
+  #========  FLAKES
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  #========  BOOT
+  # Bootloader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+  system.stateVersion = "26.05"; # Did you read the comment?
+
+  #========  NETWORKING
+  # Define your hostname.
+  networking.hostName = "nixos";
+
+  # Enable networking
+  networking.networkmanager.enable = true;
+
+  # Configure network proxy if necessary
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # networking.firewall.enable = false;
+
+  #========  LOCAL & TIME
+  # Set your time zone.
+  time.timeZone = "Europe/Bucharest";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "ro_RO.UTF-8";
+    LC_IDENTIFICATION = "ro_RO.UTF-8";
+    LC_MEASUREMENT = "ro_RO.UTF-8";
+    LC_MONETARY = "ro_RO.UTF-8";
+    LC_NAME = "ro_RO.UTF-8";
+    LC_NUMERIC = "ro_RO.UTF-8";
+    LC_PAPER = "ro_RO.UTF-8";
+    LC_TELEPHONE = "ro_RO.UTF-8";
+    LC_TIME = "ro_RO.UTF-8";
+  };
+
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
+  #========  DESKTOP ENVIRONMENT
+  # Enable the X11 windowing system.
+  # You can disable this if you're only using the Wayland session.
+  services.xserver.enable = true;
+
+  # Enable the KDE Plasma Desktop Environment.
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
+
+  #========  PRINTING
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+  #========  AUDIO
+  # Enable sound with pipewire.
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+  };
+
+  #========  TOUCHPAD
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
+
+  #========  USER
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users."nixostrop" = {
+    isNormalUser = true;
+    description = "nixostrop";
+    extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.fish;
+    packages = with pkgs; [
+      kdePackages.kate
+      # thunderbird
+    ];
+  };
+
+  nixpkgs.config.allowUnfree = true;
+
+  #========  SHELL
+  programs.fish.enable = true;
+
+  #========  DEV TOOLS
+  programs.nix-ld.enable = true; # enabled this for zed
+
+  #========  NVIDIA
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true; # needed for Steam/Proton
+  };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    open = true; # open-source kernel module, supported for Ampere (RTX 3060 Ti)
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  #========  GAMING
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
+
+  # changed kernel to zen, supposedly better for gaming
+  #boot.kernelPackages = pkgs.linuxPackages_zen;
+
+  # ntsync for proton
+  #boot.kernelModules = [ "ntsync" ];
+
+  # gamemoderun %command%
+  programs.gamemode.enable = true;
+
+  # gamescope -W 2560 -H 1440 -- %command%
+  programs.gamescope.enable = true;
+
+  boot.kernel.sysctl = {
+    "vm.max_map_count" = 2147483647;
+    "vm.swappiness" = 1;
+  };
+
+  #========  BROWSER
+  programs.firefox.enable = true;
+
+  environment.sessionVariables = {
+    BROWSER = "brave";
+  };
+
+  #========  MOUNTS
+  fileSystems."/mnt/SSD320" = {
+    device = "/dev/disk/by-uuid/64f737eb-9aac-41d6-b473-7e1b39e8af5a";
+    fsType = "btrfs";
+    options = [ "defaults" "rw" ];
+  };
+
+  fileSystems."/mnt/HDD150" = {
+    device = "/dev/disk/by-uuid/20823498823473FE";
+    fsType = "ntfs";
+    options = [ "defaults" "rw" "uid=1000" "gid=100" ];
+  };
+
+  fileSystems."/mnt/WINDOWS130" = {
+    device = "/dev/disk/by-uuid/6C0253160252E51C";
+    fsType = "ntfs";
+    options = [ "defaults" "rw" "uid=1000" "gid=100" ];
+  };
+
+  #========  PACKAGES
+  environment.systemPackages = with pkgs; [
+    # was here on install
+    wget
+
+    # terminal
+    kitty
+
+    # programming languages & tools
+    rustup
+    python3
+    python3Packages.pip
+    gcc
+    pkg-config
+    sqlite
+    git
+    github-desktop
+    zed-editor
+    nixd
+    nil
+
+    # filesystems
+    ntfs3g
+    gnutar
+    xz
+    zstd
+
+    # gaming
+    #steam
+    #protonup-qt
+    protonplus
+    mangohud
+
+    # proton suite
+    proton-pass
+    protonmail-desktop
+    proton-vpn
+
+    # apps
+    zapzap
+    tidal-hifi
+    legcord
+    bleachbit
+    onlyoffice-desktopeditors
+    sqlitebrowser
+    qbittorrent
+    brave
+    vlc
+
+    # utilities
+    fastfetch
+    kdePackages.filelight
+    btop
+  ];
+
+  #========  OPTIONAL
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+}
