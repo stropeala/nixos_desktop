@@ -23,11 +23,9 @@
   # ssh-keygen -t ed25519 -C "petre.ispir2002@protonmail.com"
   programs.ssh = {
     enable = true;
-    settings = {
-      matchBlocks = {
-        "github.com" = {
-          identityFile = "~/.ssh/id_ed25519";
-        };
+    matchBlocks = {
+      "github.com" = {
+        identityFile = "~/.ssh/id_ed25519";
       };
     };
   };
