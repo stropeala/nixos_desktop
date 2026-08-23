@@ -11,7 +11,10 @@
   ];
 
   #========  FLAKES
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   #========  BOOT
   # Bootloader.
@@ -105,7 +108,10 @@
   users.users."nixostrop" = {
     isNormalUser = true;
     description = "nixostrop";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     shell = pkgs.fish;
     packages = with pkgs; [
       kdePackages.kate
@@ -172,19 +178,32 @@
   fileSystems."/mnt/SSD320" = {
     device = "/dev/disk/by-uuid/64f737eb-9aac-41d6-b473-7e1b39e8af5a";
     fsType = "btrfs";
-    options = [ "defaults" "rw" ];
+    options = [
+      "defaults"
+      "rw"
+    ];
   };
 
   fileSystems."/mnt/HDD150" = {
     device = "/dev/disk/by-uuid/20823498823473FE";
     fsType = "ntfs";
-    options = [ "defaults" "rw" "uid=1000" "gid=100" ];
+    options = [
+      "defaults"
+      "rw"
+      "uid=1000"
+      "gid=100"
+    ];
   };
 
   fileSystems."/mnt/WINDOWS130" = {
     device = "/dev/disk/by-uuid/6C0253160252E51C";
     fsType = "ntfs";
-    options = [ "defaults" "rw" "uid=1000" "gid=100" ];
+    options = [
+      "defaults"
+      "rw"
+      "uid=1000"
+      "gid=100"
+    ];
   };
 
   #========  PACKAGES
@@ -235,6 +254,7 @@
     qbittorrent
     brave
     vlc
+    haruna
 
     # utilities
     fastfetch
