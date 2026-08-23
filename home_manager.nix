@@ -3,5 +3,11 @@
 {
   home.stateVersion = "26.05";
 
-  programs.fish.enable = true;
+  #========  FISH
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      fetch
+    '';
+  };
 }
