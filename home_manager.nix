@@ -11,9 +11,9 @@
   #========  GIT
   programs.git = {
     enable = true;
-    userName = "Petre Razvan";
-    userEmail = "petre.ispir2002@protonmail.com";
-    extraConfig = {
+    settings = {
+      user.name = "Petre Razvan";
+      user.email = "petre.ispir2002@protonmail.com";
       init.defaultBranch = "main";
       pull.rebase = false;
     };
