@@ -7,7 +7,7 @@
   programs.fish = {
     enable = true;
     interactiveShellInit = ''
-      fetch
+      fastfetch
     '';
   };
 }
