@@ -260,6 +260,7 @@
     fastfetch
     kdePackages.filelight
     btop
+    jetbrains-mono
   ];
 
   #========  OPTIONAL
