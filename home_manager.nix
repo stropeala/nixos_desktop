@@ -99,6 +99,7 @@
 
       "audio/aac" = "vlc.desktop";
       "audio/mp4" = "vlc.desktop";
+      "audio/mkv" = "vlc.desktop";
       "audio/mpeg" = "vlc.desktop";
       "audio/mpegurl" = "vlc.desktop";
       "audio/ogg" = "vlc.desktop";
