@@ -7,6 +7,10 @@
   xdg.configFile."zed/settings.json".source = ./dotfiles/zed/settings.json;
   xdg.configFile."zed/keymap.json".source = ./dotfiles/zed/keymap.json;
   xdg.configFile."zed/tasks.json".source = ./dotfiles/zed/tasks.json;
+  xdg.configFile."zed/themes/catppuccin-mocha-kitty-match.json".source =
+    ./dotfiles/zed/themes/catppuccin-mocha-kitty-match.json;
+  xdg.configFile."zed/themes/Custom-Catppuccin-Mocha_plus_Nightfox-Blurred.json".source =
+    ./dotfiles/zed/themes/Custom-Catppuccin-Mocha_plus_Nightfox-Blurred.json;
 
   #========  GIT
   programs.git = {
