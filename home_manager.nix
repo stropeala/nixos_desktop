@@ -39,6 +39,7 @@
     enable = true;
     interactiveShellInit = ''
       fastfetch
+      fish_add_path "/home/nixostrop/.local/bin"
     '';
   };
 

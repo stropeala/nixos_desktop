@@ -216,11 +216,13 @@
 
     # programming languages & tools
     rustup
-    python3
-    python3Packages.pip
+    uv
+    #python3
+    #python3Packages.pip
     gcc
     pkg-config
     sqlite
+    postgresql
     git
     github-desktop
     zed-editor
