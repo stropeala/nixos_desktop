@@ -25,10 +25,10 @@
         "border.transparent": "#1E1E2E00",
         "border.disabled": "#313244ff",
 
-        "elevated_surface.background": "#181825ff",
+        "elevated_surface.background": "#181825",
         "surface.background": "#181825e3",
 
-        "element.background": "#313244ff",
+        "element.background": "#313244",
         "element.hover": "#45475Aff",
         "element.active": "#585B70ff",
         "element.selected": "#585B70ff",
