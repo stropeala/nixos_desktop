@@ -72,7 +72,7 @@
   #========  DESKTOP ENVIRONMENT
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
+  #services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
@@ -274,6 +274,13 @@
     kdePackages.filelight
     btop
     jetbrains-mono
+
+    # kde plasma sddm login screen wallpaper
+    (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
+      [General]
+      background=${./home/plasma/skyrim-night-wallpapers.png}
+      type=image
+    '')
   ];
 
   #========  OPTIONAL

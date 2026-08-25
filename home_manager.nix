@@ -6,17 +6,17 @@
   #========  ZED
   xdg.configFile = {
     # config
-    "zed/settings.json".source = ./dotfiles/zed/settings.json;
-    "zed/keymap.json".source = ./dotfiles/zed/keymap.json;
-    "zed/tasks.json".source = ./dotfiles/zed/tasks.json;
+    "zed/settings.json".source = ./manager/zed/settings.json;
+    "zed/keymap.json".source = ./manager/zed/keymap.json;
+    "zed/tasks.json".source = ./manager/zed/tasks.json;
 
     # themes
     "zed/themes/custom-catppuccin-mocha_v1.json".source =
-      ./dotfiles/zed/themes/custom-catppuccin-mocha_v1.json;
+      ./manager/zed/themes/custom-catppuccin-mocha_v1.json;
     "zed/themes/custom-catppuccin-mocha_v2.json".source =
-      ./dotfiles/zed/themes/custom-catppuccin-mocha_v2.json;
+      ./manager/zed/themes/custom-catppuccin-mocha_v2.json;
     "zed/themes/custom-catppuccin-mocha_v3.json".source =
-      ./dotfiles/zed/themes/custom-catppuccin-mocha_v3.json;
+      ./manager/zed/themes/custom-catppuccin-mocha_v3.json;
   };
 
   #========  GIT
@@ -118,6 +118,10 @@
       toggle_hud = "Shift_R+F12";
     };
   };
+
+  #========  KDE PLASMA WALLPAPER
+  home.file."Pictures/Wallpapers/skyrim-night-wallpapers.png".source =
+    ./home/plasma/skyrim-night-wallpapers.png;
 
   #========  MIMEAPPS.LIST DEFAULTS
   xdg.mimeApps = {
