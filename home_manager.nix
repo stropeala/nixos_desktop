@@ -4,15 +4,30 @@
   home.stateVersion = "26.05";
 
   #========  ZED
-  xdg.configFile."zed/settings.json".source = ./dotfiles/zed/settings.json;
-  xdg.configFile."zed/keymap.json".source = ./dotfiles/zed/keymap.json;
-  xdg.configFile."zed/tasks.json".source = ./dotfiles/zed/tasks.json;
-  xdg.configFile."zed/themes/catppuccin-mocha-kitty-match.json".source =
-    ./dotfiles/zed/themes/catppuccin-mocha-kitty-match.json;
-  xdg.configFile."zed/themes/Custom-Catppuccin-Mocha_plus_Nightfox-Blurred.json".source =
-    ./dotfiles/zed/themes/Custom-Catppuccin-Mocha_plus_Nightfox-Blurred.json;
-  xdg.configFile."zed/themes/catppuccin_mocha_glass".source =
-    ./dotfiles/zed/themes/catppuccin_mocha_glass;
+  # xdg.configFile."zed/settings.json".source = ./dotfiles/zed/settings.json;
+  # xdg.configFile."zed/keymap.json".source = ./dotfiles/zed/keymap.json;
+  # xdg.configFile."zed/tasks.json".source = ./dotfiles/zed/tasks.json;
+  # xdg.configFile."zed/themes/catppuccin-mocha-kitty-match.json".source =
+  #   ./dotfiles/zed/themes/catppuccin-mocha-kitty-match.json;
+  # xdg.configFile."zed/themes/Custom-Catppuccin-Mocha_plus_Nightfox-Blurred.json".source =
+  #   ./dotfiles/zed/themes/Custom-Catppuccin-Mocha_plus_Nightfox-Blurred.json;
+  # xdg.configFile."zed/themes/catppuccin_mocha_glass.json".source =
+  #   ./dotfiles/zed/themes/catppuccin_mocha_glass.json;
+
+  xdg.configFile = {
+    # config
+    "zed/settings.json".source = ./dotfiles/zed/settings.json;
+    "zed/keymap.json".source = ./dotfiles/zed/keymap.json;
+    "zed/tasks.json".source = ./dotfiles/zed/tasks.json;
+
+    # themes
+    "zed/themes/custom-catppuccin-mocha_v1.json".source =
+      ./dotfiles/zed/themes/custom-catppuccin-mocha_v1.json;
+    "zed/themes/custom-catppuccin-mocha_v2.json".source =
+      ./dotfiles/zed/themes/custom-catppuccin-mocha_v2.json;
+    "zed/themes/custom-catppuccin-mocha_v3.json".source =
+      ./dotfiles/zed/themes/custom-catppuccin-mocha_v3.json;
+  };
 
   #========  GIT
   programs.git = {
