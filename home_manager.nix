@@ -11,6 +11,8 @@
     ./dotfiles/zed/themes/catppuccin-mocha-kitty-match.json;
   xdg.configFile."zed/themes/Custom-Catppuccin-Mocha_plus_Nightfox-Blurred.json".source =
     ./dotfiles/zed/themes/Custom-Catppuccin-Mocha_plus_Nightfox-Blurred.json;
+  xdg.configFile."zed/themes/catppuccin_mocha_glass".source =
+    ./dotfiles/zed/themes/catppuccin_mocha_glass;
 
   #========  GIT
   programs.git = {
