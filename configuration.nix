@@ -278,7 +278,7 @@
     # kde plasma sddm login screen wallpaper
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
       [General]
-      background=${./home/plasma/skyrim-night-wallpapers.png}
+      background=${./manager/plasma/skyrim-night-wallpapers.png}
       type=image
     '')
   ];
