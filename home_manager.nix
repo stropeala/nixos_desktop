@@ -121,7 +121,7 @@
 
   #========  KDE PLASMA WALLPAPER
   home.file."Pictures/Wallpapers/skyrim-night-wallpapers.png".source =
-    ./home/plasma/skyrim-night-wallpapers.png;
+    ./manager/plasma/skyrim-night-wallpapers.png;
 
   #========  MIMEAPPS.LIST DEFAULTS
   xdg.mimeApps = {
