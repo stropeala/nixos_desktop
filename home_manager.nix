@@ -99,6 +99,26 @@
     };
   };
 
+  #========  GAMING
+  # mangohud
+  # gamemoderun mangohud %command%
+  programs.mangohud = {
+    enable = true;
+    settings = {
+      fps_limit = 143;
+      frame_timing = true;
+      gpu_stats = true;
+      gpu_temp = true;
+      gpu_power = true;
+      cpu_stats = true;
+      cpu_temp = true;
+      vram = true;
+      ram = true;
+      position = "top-left";
+      toggle_hud = "Shift_R+F12";
+    };
+  };
+
   #========  MIMEAPPS.LIST DEFAULTS
   xdg.mimeApps = {
     enable = true;

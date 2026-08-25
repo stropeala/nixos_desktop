@@ -125,12 +125,14 @@
   programs.fish.enable = true;
 
   #========  DEV TOOLS
-  programs.nix-ld.enable = true; # enabled this for zed
+  # enabled this for zed
+  programs.nix-ld.enable = true;
 
   #========  NVIDIA
+  # needed for Steam/Proton
   hardware.graphics = {
     enable = true;
-    enable32Bit = true; # needed for Steam/Proton
+    enable32Bit = true;
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -150,11 +152,11 @@
     dedicatedServer.openFirewall = true;
   };
 
-  # changed kernel to zen, supposedly better for gaming
-  #boot.kernelPackages = pkgs.linuxPackages_zen;
+  # zen kernel
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  # ntsync for proton
-  #boot.kernelModules = [ "ntsync" ];
+  # ntsync
+  boot.kernelModules = [ "ntsync" ];
 
   # gamemoderun %command%
   programs.gamemode.enable = true;
@@ -166,6 +168,15 @@
     "vm.max_map_count" = 2147483647;
     "vm.swappiness" = 1;
   };
+
+  # compressed RAM swap
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+  };
+
+  # intel cpu microcode updates
+  hardware.enableRedistributableFirmware = true;
 
   #========  BROWSER
   programs.firefox.enable = true;
