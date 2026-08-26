@@ -15,6 +15,17 @@
     "nix-command"
     "flakes"
   ];
+  systemd.services.NetworkManager-wait-online.enable = false;
+  programs.nix-index.enable = true;
+
+  # nix automatic garbage collector
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 7d";
+  };
+  nix.settings.auto-optimise-store = true;
+  boot.tmp.cleanOnBoot = true;
 
   #========  BOOT
   # Bootloader.
@@ -157,16 +168,33 @@
 
   # ntsync
   boot.kernelModules = [ "ntsync" ];
+  services.udev.packages = [
+    (pkgs.writeTextFile {
+      name = "ntsync-udev-rules";
+      text = ''KERNEL=="ntsync", MODE="0660", TAG+="uaccess"'';
+      destination = "/etc/udev/rules.d/70-ntsync.rules";
+    })
+  ];
 
   # gamemoderun %command%
-  programs.gamemode.enable = true;
+  programs.gamemode = {
+    enable = true;
+    enableRenice = true;
+  };
 
   # gamescope -W 2560 -H 1440 -- %command%
-  programs.gamescope.enable = true;
+  programs.gamescope = {
+    enable = true;
+    capSysNice = true;
+  };
 
   boot.kernel.sysctl = {
     "vm.max_map_count" = 2147483647;
-    "vm.swappiness" = 1;
+    "vm.swappiness" = 150;
+    "vm.page-cluster" = 0;
+    "vm.dirty_bytes" = 268435456;
+    "vm.dirty_background_bytes" = 67108864;
+    "kernel.nmi_watchdog" = 0;
   };
 
   # compressed RAM swap
@@ -177,6 +205,17 @@
 
   # intel cpu microcode updates
   hardware.enableRedistributableFirmware = true;
+
+  # power management
+  powerManagement.scsiLinkPolicy = "max_performance";
+
+  # device rules that apply automatically whenever a matching drive/module is detected
+  services.udev.extraRules = ''
+    ACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
+    ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"
+    ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="none"
+    ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTRS{id/bus}=="ata", RUN+="${pkgs.hdparm}/bin/hdparm -B 254 -S 0 /dev/%k"
+  '';
 
   #========  BROWSER
   programs.firefox.enable = true;
