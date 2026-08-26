@@ -159,7 +159,7 @@
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
+    #dedicatedServer.openFirewall = true;
   };
 
   # zen kernel
@@ -181,10 +181,13 @@
     enableRenice = true;
   };
 
-  # gamescope -W 2560 -H 1440 -- %command%
+  # gamescope -W 2560 -H 1440 -f --mangoapp -- gamemoderun %command%
   programs.gamescope = {
     enable = true;
-    capSysNice = true;
+    #capSysNice = true;
+    env = {
+      ENABLE_GAMESCOPE_WSI = "0";
+    };
   };
 
   boot.kernel.sysctl = {
@@ -293,7 +296,7 @@
     #steam
     #protonup-qt
     protonplus
-    mangohud
+    #mangohud
 
     # proton suite
     proton-pass
