@@ -16,7 +16,6 @@
     "flakes"
   ];
   systemd.services.NetworkManager-wait-online.enable = false;
-  programs.nix-index.enable = true;
 
   # nix automatic garbage collector
   nix.gc = {
@@ -167,14 +166,14 @@
   #boot.kernelPackages = pkgs.linuxPackages_zen;
 
   # ntsync
-  boot.kernelModules = [ "ntsync" ];
-  services.udev.packages = [
-    (pkgs.writeTextFile {
-      name = "ntsync-udev-rules";
-      text = ''KERNEL=="ntsync", MODE="0660", TAG+="uaccess"'';
-      destination = "/etc/udev/rules.d/70-ntsync.rules";
-    })
-  ];
+  #boot.kernelModules = [ "ntsync" ];
+  #services.udev.packages = [
+  #(pkgs.writeTextFile {
+  #name = "ntsync-udev-rules";
+  #text = ''KERNEL=="ntsync", MODE="0660", TAG+="uaccess"'';
+  #destination = "/etc/udev/rules.d/70-ntsync.rules";
+  #})
+  #];
 
   # gamemoderun %command%
   programs.gamemode = {
@@ -194,8 +193,12 @@
     "vm.page-cluster" = 0;
     "vm.dirty_bytes" = 268435456;
     "vm.dirty_background_bytes" = 67108864;
-    "kernel.nmi_watchdog" = 0;
+    "kernel.nmi_watchdog" = 1;
   };
+
+  # kernel log
+  # journalctl -b -1 -k | grep -iE "nvrm|xid|oom|hung|bug:"
+  services.journald.storage = "persistent";
 
   # compressed RAM swap
   zramSwap = {
@@ -257,6 +260,7 @@
   };
 
   #========  PACKAGES
+  programs.nix-index.enable = true;
   environment.systemPackages = with pkgs; [
     # was here on install
     wget
