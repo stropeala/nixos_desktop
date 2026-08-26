@@ -163,7 +163,7 @@
   };
 
   # zen kernel
-  #boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   # ntsync
   #boot.kernelModules = [ "ntsync" ];
