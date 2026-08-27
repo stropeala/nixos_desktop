@@ -320,6 +320,7 @@
     kdePackages.filelight
     btop
     jetbrains-mono
+    kdePackages.kpmcore
 
     # kde plasma sddm login screen wallpaper
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
