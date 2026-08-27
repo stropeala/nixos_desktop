@@ -41,7 +41,7 @@
 
   #========  NETWORKING
   # Define your hostname.
-  networking.hostName = "nixos";
+  networking.hostName = "nixostrop";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -320,6 +320,7 @@
     kdePackages.filelight
     btop
     jetbrains-mono
+    kdePackages.partitionmanager
 
     # kde plasma sddm login screen wallpaper
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''

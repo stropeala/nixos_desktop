@@ -1,5 +1,5 @@
 {
-  description = "nixostrop nixos configuration";
+  description = "nixostrop's nixos configuration";
 
   #========  INPUTS
   inputs = {
@@ -14,9 +14,9 @@
 
     # kde plasma manager
     #plasma-manager = {
-      #url = "github:nix-community/plasma-manager";
-      #inputs.nixpkgs.follows = "nixpkgs";
-      #inputs.home-manager.follows = "home-manager";
+    #url = "github:nix-community/plasma-manager";
+    #inputs.nixpkgs.follows = "nixpkgs";
+    #inputs.home-manager.follows = "home-manager";
     #};
 
     #========  HOME MANAGER
@@ -36,7 +36,7 @@
       ...
     }:
     {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.nixostrop = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
 
         modules = [
