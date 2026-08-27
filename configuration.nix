@@ -231,7 +231,7 @@
   };
 
   #========  MOUNTS
-  fileSystems."/mnt/SSD320" = {
+  fileSystems."/mnt/SSD340" = {
     device = "/dev/disk/by-uuid/64f737eb-9aac-41d6-b473-7e1b39e8af5a";
     fsType = "btrfs";
     options = [
@@ -251,7 +251,7 @@
     ];
   };
 
-  fileSystems."/mnt/WINDOWS130" = {
+  fileSystems."/mnt/WINDOWS100" = {
     device = "/dev/disk/by-uuid/6C0253160252E51C";
     fsType = "ntfs";
     options = [
