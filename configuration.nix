@@ -26,6 +26,12 @@
   nix.settings.auto-optimise-store = true;
   boot.tmp.cleanOnBoot = true;
 
+  # extra binary cache
+  nix.settings.substituters = [ "https://nix-community.cachix.org" ];
+  nix.settings.trusted-public-keys = [
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  ];
+
   #========  BOOT
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -45,6 +51,10 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # KDE Connect (already bundled with Plasma) needs the firewall opened to
+  # actually talk to your phone — notifications, media controls, file share
+  # programs.kdeconnect.enable = true;
 
   # Configure network proxy if necessary
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -182,6 +192,7 @@
   programs.gamemode = {
     enable = true;
     enableRenice = true;
+    settings.general.softrealtime = "auto";
   };
 
   # gamescope -W 2560 -H 1440 -f --mangoapp -- gamemoderun %command%
@@ -194,12 +205,18 @@
   };
 
   boot.kernel.sysctl = {
-    "vm.max_map_count" = 2147483647;
+    "vm.max_map_count" = 2147483642;
     "vm.swappiness" = 150;
     "vm.page-cluster" = 0;
     "vm.dirty_bytes" = 268435456;
     "vm.dirty_background_bytes" = 67108864;
     "kernel.nmi_watchdog" = 1;
+
+    # SteamOS-style tweaks from nix-gaming's platformOptimizations
+    "kernel.sched_cfs_bandwidth_slice_us" = 3000;
+    "kernel.split_lock_mitigate" = 0;
+
+    "kernel.sysrq" = 0;
   };
 
   # kernel log
@@ -289,11 +306,23 @@
     nixd
     nil
 
+    # nix formatting/linting
+    nixfmt
+    statix
+    deadnix
+
     # filesystems
     ntfs3g
     gnutar
     xz
     zstd
+
+    # cli
+    fd # faster find
+    ripgrep # faster grep
+    dust # faster du
+    duf # faster df
+    jaq # faster jq
 
     # gaming
     #steam
@@ -322,8 +351,9 @@
     fastfetch
     kdePackages.filelight
     btop
-    jetbrains-mono
+    nerd-fonts.jetbrains-mono
     kdePackages.partitionmanager
+    v4l-utils
 
     # kde plasma sddm login screen wallpaper
     (pkgs.writeTextDir "share/sddm/themes/breeze/theme.conf.user" ''
