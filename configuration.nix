@@ -165,6 +165,9 @@
   # zen kernel
   #boot.kernelPackages = pkgs.linuxPackages_zen;
 
+  # latest vanilla kernel
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # ntsync
   #boot.kernelModules = [ "ntsync" ];
   #services.udev.packages = [
