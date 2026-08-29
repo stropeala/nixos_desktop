@@ -294,8 +294,8 @@
     # programming languages & tools
     rustup
     uv
-    #python3
-    #python3Packages.pip
+    # python3
+    # python3Packages.pip
     gcc
     pkg-config
     sqlite
@@ -325,10 +325,10 @@
     jaq # faster jq
 
     # gaming
-    #steam
-    #protonup-qt
+    # steam
+    # protonup-qt
     protonplus
-    #mangohud
+    # mangohud
 
     # proton suite
     proton-pass
@@ -338,6 +338,7 @@
     # apps
     zapzap
     tidal-hifi
+    high-tide
     legcord
     bleachbit
     onlyoffice-desktopeditors

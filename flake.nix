@@ -13,11 +13,11 @@
     };
 
     # kde plasma manager
-    #plasma-manager = {
-    #url = "github:nix-community/plasma-manager";
-    #inputs.nixpkgs.follows = "nixpkgs";
-    #inputs.home-manager.follows = "home-manager";
-    #};
+    # plasma-manager = {
+    #   url = "github:nix-community/plasma-manager";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.home-manager.follows = "home-manager";
+    # };
 
     #========  HOME MANAGER
     home-manager = {
@@ -41,6 +41,8 @@
 
         modules = [
           ./configuration.nix
+          { nix.registry.nixpkgs.flake = nixpkgs; }
+
           #========  APPS
           # areofyl-fetch
           ({ pkgs, ... }: {
@@ -51,8 +53,6 @@
               areofyl-fetch.packages.${pkgs.system}.default
             ];
           })
-
-          { nix.registry.nixpkgs.flake = nixpkgs; }
 
           #========  HOME MANAGER MODULES
           home-manager.nixosModules.home-manager
