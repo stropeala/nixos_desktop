@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   home.stateVersion = "26.05";
@@ -36,6 +41,7 @@
         amend = "commit --amend --no-edit";
       };
     };
+
     # Settings -> SSH and GPG keys -> New SSH key -> key type "Signing Key"
     signing = {
       key = "~/.ssh/id_ed25519.pub";
@@ -50,13 +56,32 @@
     options.dark = true;
   };
 
+  #========  PROTON VPN
+  xdg.configFile = {
+    "Proton/VPN/app-config.json".source = ./manager/proton-vpn/app-config.json;
+  };
+
   #========  SSH
   # ssh-keygen -t ed25519 -C "petre.ispir2002@protonmail.com"
   programs.ssh = {
     enable = true;
-    matchBlocks = {
+    enableDefaultConfig = false;
+    settings = {
+      "*" = {
+        ForwardAgent = false;
+        AddKeysToAgent = "no";
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
+      };
+
       "github.com" = {
-        identityFile = "~/.ssh/id_ed25519";
+        IdentityFile = "~/.ssh/id_ed25519";
       };
     };
   };
@@ -70,7 +95,7 @@
     '';
   };
 
-  #========  DEV
+  #========  DEV TOOLS
   # auto-loads/unloads a project's .envrc (env vars, nix develop shells) as
   # you cd in and out of directories
   programs.direnv = {
@@ -121,6 +146,8 @@
 
     settings = {
       shell = "/run/current-system/sw/bin/fish";
+
+      touch_scroll_multiplier = 2.69;
 
       background_opacity = "0.92";
       window_padding_width = 10;
@@ -178,9 +205,28 @@
     };
   };
 
+  #========  COREFONTS FOR ONLYOFFICE
+  home.activation.installCorefontsForOnlyOffice = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.local/share/fonts"
+    for f in ${pkgs.corefonts}/share/fonts/truetype/*.ttf; do
+      cp -f "$f" "$HOME/.local/share/fonts/"
+    done
+    chmod 644 "$HOME"/.local/share/fonts/*.ttf
+    ${pkgs.fontconfig}/bin/fc-cache -f "$HOME/.local/share/fonts" || true
+  '';
+
   #========  KDE PLASMA WALLPAPER
   home.file."Pictures/Wallpapers/skyrim-night-wallpapers.png".source =
     ./manager/plasma/skyrim-night-wallpapers.png;
+
+  #========  AUTOSTART
+  xdg.autostart = {
+    enable = true;
+    readOnly = true;
+    entries = [
+      "${pkgs.proton-vpn}/share/applications/proton.vpn.app.gtk.desktop"
+    ];
+  };
 
   #========  MIMEAPPS.LIST DEFAULTS
   xdg.mimeApps = {

@@ -12,13 +12,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # kde plasma manager
-    # plasma-manager = {
-    #   url = "github:nix-community/plasma-manager";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    #   inputs.home-manager.follows = "home-manager";
-    # };
-
     #========  HOME MANAGER
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -37,10 +30,9 @@
     }:
     {
       nixosConfigurations.nixostrop = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-
         modules = [
           ./configuration.nix
+          { nixpkgs.hostPlatform = "x86_64-linux"; }
           { nix.registry.nixpkgs.flake = nixpkgs; }
 
           #========  APPS
@@ -50,16 +42,19 @@
               areofyl-fetch.overlays.default
             ];
             environment.systemPackages = [
-              areofyl-fetch.packages.${pkgs.system}.default
+              areofyl-fetch.packages.${pkgs.stdenv.hostPlatform.system}.default
             ];
           })
 
           #========  HOME MANAGER MODULES
           home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.nixostrop = import ./home_manager.nix;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.lapstrop = import ./home_manager.nix;
+              backupFileExtension = "hm-bak";
+            };
           }
         ];
       };

@@ -52,9 +52,12 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Enable bluetooth
+  hardware.bluetooth.enable = true;
+
   # KDE Connect (already bundled with Plasma) needs the firewall opened to
   # actually talk to your phone — notifications, media controls, file share
-  # programs.kdeconnect.enable = true;
+  programs.kdeconnect.enable = true;
 
   # Configure network proxy if necessary
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -92,7 +95,7 @@
   #========  DESKTOP ENVIRONMENT
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  #services.xserver.enable = true;
+  # services.xserver.enable = true;
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
@@ -112,16 +115,16 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    # jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    # media-session.enable = true;
   };
 
   #========  TOUCHPAD
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  # services.libinput.enable = true;
 
   #========  USER
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -131,6 +134,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "video"
     ];
     shell = pkgs.fish;
     packages = with pkgs; [
@@ -169,24 +173,25 @@
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
-    #dedicatedServer.openFirewall = true;
+    # dedicatedServer.openFirewall = true;
   };
 
-  # zen kernel
-  #boot.kernelPackages = pkgs.linuxPackages_zen;
+  # latest vanilla linux kernel
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # latest vanilla kernel
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  # bbr & ntsync
+  boot.kernelModules = [
+    "tcp_bbr"
+    # "ntsync"
+  ];
 
-  # ntsync
-  #boot.kernelModules = [ "ntsync" ];
-  #services.udev.packages = [
-  #(pkgs.writeTextFile {
-  #name = "ntsync-udev-rules";
-  #text = ''KERNEL=="ntsync", MODE="0660", TAG+="uaccess"'';
-  #destination = "/etc/udev/rules.d/70-ntsync.rules";
-  #})
-  #];
+  # services.udev.packages = [
+  #   (pkgs.writeTextFile {
+  #     name = "ntsync-udev-rules";
+  #     text = ''KERNEL=="ntsync", MODE="0660", TAG+="uaccess"'';
+  #     destination = "/etc/udev/rules.d/70-ntsync.rules";
+  #   })
+  # ];
 
   # gamemoderun %command%
   programs.gamemode = {
@@ -198,7 +203,7 @@
   # gamescope -W 2560 -H 1440 -f --mangoapp -- gamemoderun %command%
   programs.gamescope = {
     enable = true;
-    #capSysNice = true;
+    # capSysNice = true;
     env = {
       ENABLE_GAMESCOPE_WSI = "0";
     };
@@ -211,6 +216,11 @@
     "vm.dirty_bytes" = 268435456;
     "vm.dirty_background_bytes" = 67108864;
     "kernel.nmi_watchdog" = 1;
+
+    # networking — bbr + cake
+    "net.ipv4.tcp_congestion_control" = "bbr";
+    "net.core.default_qdisc" = "cake";
+    "net.ipv4.tcp_fin_timeout" = 5;
 
     # SteamOS-style tweaks from nix-gaming's platformOptimizations
     "kernel.sched_cfs_bandwidth_slice_us" = 3000;
@@ -284,6 +294,13 @@
 
   #========  PACKAGES
   programs.nix-index.enable = true;
+
+  # fonts
+  fonts.packages = with pkgs; [
+    jetbrains-mono
+    corefonts
+  ];
+
   environment.systemPackages = with pkgs; [
     # was here on install
     wget
@@ -294,8 +311,6 @@
     # programming languages & tools
     rustup
     uv
-    # python3
-    # python3Packages.pip
     gcc
     pkg-config
     sqlite
@@ -325,10 +340,7 @@
     jaq # faster jq
 
     # gaming
-    # steam
-    # protonup-qt
     protonplus
-    # mangohud
 
     # proton suite
     proton-pass
@@ -347,13 +359,13 @@
     brave
     vlc
     haruna
+    localsend
 
     # utilities
     fastfetch
     kdePackages.filelight
     btop
-    nerd-fonts.jetbrains-mono
-    kdePackages.partitionmanager
+    gparted
     v4l-utils
 
     # kde plasma sddm login screen wallpaper
