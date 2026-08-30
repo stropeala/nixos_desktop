@@ -52,7 +52,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.lapstrop = import ./home_manager.nix;
+              users.nixostrop = import ./home_manager.nix;
               backupFileExtension = "hm-bak";
             };
           }
